@@ -1,0 +1,34 @@
+.theme-toggle {
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+/* Hover Animation */
+.theme-toggle:hover {
+  transform: rotate(45deg) scale(1.25
+  
+  
+  
+  
+  );
+}
+
+/* Light Theme */
+[data-theme="light"] .theme-toggle {
+  background-color: black;
+  color: white;
+}
+
+/* Dark Theme */
+[data-theme="dark"] .theme-toggle {
+  background-color: white;
+  color: black;
+}
