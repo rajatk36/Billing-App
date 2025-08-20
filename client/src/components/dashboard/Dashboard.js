@@ -20,7 +20,9 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false);
     const [loadingAdd, setLoadingAdd] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
+    const [loadingUpdate, setLoadingUpdate] = useState(false);
     const [error, setError] = useState("");
+    const [errorDelete, setErrorDelete] = useState("");
 
     useEffect(() => {
         const init = async () => {
@@ -89,7 +91,34 @@ const Dashboard = () => {
             alert("Please fill in all fields");
             return;
         }
+        const Validname=/^[A-Za-z\s]{3,}$/;
+        const Validcontact = /^\d{10}$/;
+        const Validemail=/^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
+        if(!Validname.test(formData.name)){
+            setError("Name must be filled");
+            
+            return;
+        }
+        setError("");
+        if (!Validcontact.test(formData.contact)) {
+            setError("Contact must be exactly 10 digits");
+            
+            return;
+        }
+        setError("");
+        if (!Validemail.test(formData.email)) {
+            setError("Email must be a valid @gmail.com address");
+            
+            return;
+        }
+        setError("");
+        if(!/^\d+$/.test(formData.amount) || Number(formData.amount) <= 0){
+            setError("Amount must not be empty")
+            
+            return;
+        }
+        setError("");
         try {
             setLoadingAdd(true);
             console.log("Adding bill with data:", formData);
@@ -120,6 +149,7 @@ const Dashboard = () => {
         }
 
         try {
+            setLoadingUpdate(true);
             console.log("Updating bill with data:", formData);
             const response = await api.updateBill(editingBillId, {
                 name: formData.name,
@@ -128,7 +158,7 @@ const Dashboard = () => {
                 amount: formData.amount
             });
             console.log("Bill updated successfully:", response);
-         
+            setLoadingUpdate(false);
             await fetchBills();
             await fetchUserStats();
             
@@ -183,19 +213,20 @@ const Dashboard = () => {
     if (!confirmDelete) return;
 
     setLoadingDelete(true);
-    setError("");
+    setErrorDelete("");
 
     try {
       const res = await api.deleteAccount();
 
       if (res.success) {
         alert("✅ Account deleted successfully.");
-        navigate("/login"); // redirect after delete
+        navigate("/"); 
       } else {
-        setError(res.error || "Failed to delete account.");
+        setErrorDelete(res.error || "Failed to delete account.");
       }
     } catch (err) {
-      setError(err.message || "Error deleting account.");
+      setErrorDelete(err.message || "Error deleting account.");
+      navigate("/");
     } finally {
       setLoadingDelete(false);
     }
@@ -226,7 +257,6 @@ const Dashboard = () => {
     return (
     <ThemeProvider>
         <div className="container">
-
             <div className="theme-toggle-wrapper">
                 <ThemeToggle />
                 <div className="user-info">
@@ -247,12 +277,12 @@ const Dashboard = () => {
                     {<FaSignOutAlt />}
                 Delete Account
                 </button>
-                {error && <p className="text-red-500 mt-2">{error}</p>}
+                {errorDelete && <p className="text-red-500 mt-2">{errorDelete}</p>}
 
             </div>
-
+             <p> {error}  </p>
             <h2>Billing Records</h2>
-
+            
            
             <div className="stats-container">
                 {console.log("Current userStats:", userStats)}
@@ -300,7 +330,9 @@ const Dashboard = () => {
                 </div>
 
                 {editingBillId ? (
-                    <button type="button" className="update" onClick={updateBill}>Update</button>
+                    <button type="button" className="update" onClick={updateBill} disabled={loadingUpdate}>
+                        {loadingUpdate ? "Updating...": "Update"}
+                        </button>
                 ) : (
                     <button type="button" className="add" onClick={addBill} disabled={loadingAdd}>
                         {loadingAdd ? "Adding...": "Add"}
@@ -310,7 +342,7 @@ const Dashboard = () => {
 
             <div className="toggle-button-wrapper">
                 <button className="toggle-table" onClick={onToggleBills} disabled={loading}>
-                    {loading ? "showing...": showTable ? "Hide Bills" : "Show Bills"}
+                    {loading ? "loading...": showTable ? "Hide Bills" : "Show Bills"}
                     
                 </button>
                 <button className="admin-view-btn" onClick={viewAllUsersData}>

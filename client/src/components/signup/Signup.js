@@ -13,6 +13,11 @@ export default function Signup() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    if (!email.endsWith("@gmail.com")) {
+      setError("Please use a Gmail address.");
+      return;
+    }
     setLoading(true);
     setError("");
 
