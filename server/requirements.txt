@@ -4,3 +4,4 @@ mysql-connector-python==8.1.0
 Werkzeug==2.3.7
 python-dotenv
 firebase-admin==6.5.0
+gunicorn
