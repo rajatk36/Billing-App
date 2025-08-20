@@ -1,4 +1,6 @@
-flask
-flask-cors
-gunicorn
-mysql-connector-python
+Flask==2.3.3
+Flask-CORS==4.0.0
+mysql-connector-python==8.1.0
+Werkzeug==2.3.7
+python-dotenv
+firebase-admin==6.5.0
