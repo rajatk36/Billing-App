@@ -19,7 +19,7 @@ export default function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
+      console.log("Login successful!");
       navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
