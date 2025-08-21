@@ -293,7 +293,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="input-group">
-                    <FaPhone className="icon" />
+                    <FaPhone className="icon" style={{ transform: "scaleX(-1)" }} />
                     <input type="text" name="contact" placeholder="Contact" value={formData.contact} onChange={handleChange} />
                 </div>
 
