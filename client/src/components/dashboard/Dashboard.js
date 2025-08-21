@@ -232,15 +232,7 @@ const Dashboard = () => {
     }
   };
 
-    const viewAllUsersData = async () => {
-        try {
-            const response = await api.viewAllUsersData();
-            alert("All Users Data:\n" + JSON.stringify(response, null, 2));
-        } catch (error) {
-            console.error("Error fetching all users data:", error);
-            alert(`Failed to fetch all users data: ${error.message}`);
-        }
-    };
+    
 
     const chartData = Object.values(
     bills.reduce((acc, bill) => {
@@ -345,9 +337,7 @@ const Dashboard = () => {
                     {loading ? "loading...": showTable ? "Hide Bills" : "Show Bills"}
                     
                 </button>
-                <button className="admin-view-btn" onClick={viewAllUsersData}>
-                    View All Users Data
-                </button>
+
             </div>
             
 
