@@ -125,14 +125,9 @@ const Dashboard = () => {
             const response = await api.addBill(formData);
             console.log("Bill added successfully:", response);
             setLoadingAdd(false);
-            // Refresh data
             await fetchBills();
             await fetchUserStats();
-            
-            // Clear form
             setFormData({ name: "", contact: "", email: "", amount: "" });
-            
-            alert("Bill added successfully!");
         } catch (error) {
             console.error("Error adding bill:", error);
             alert(`Failed to add bill: ${error.message}`);
@@ -161,12 +156,8 @@ const Dashboard = () => {
             setLoadingUpdate(false);
             await fetchBills();
             await fetchUserStats();
-            
-            
             setFormData({ name: "", contact: "", email: "", amount: "" });
             setEditingBillId(null);
-            
-            alert("Bill updated successfully!");
         } catch (error) {
             console.error("Error updating bill:", error);
             alert(`Failed to update bill: ${error.message}`);
@@ -182,12 +173,8 @@ const Dashboard = () => {
             console.log("Deleting bill:", billId);
             const response = await api.deleteBill(billId);
             console.log("Bill deleted successfully:", response);
-            
-        
             await fetchBills();
             await fetchUserStats();
-            
-            alert("Bill deleted successfully!");
         } catch (error) {
             console.error("Error deleting bill:", error);
             alert(`Failed to delete bill: ${error.message}`);
@@ -201,7 +188,6 @@ const Dashboard = () => {
             navigate("/");
         } catch (error) {
             console.error("Logout failed:", error);
-            
             navigate("/");
         }
     };
@@ -272,7 +258,7 @@ const Dashboard = () => {
                 {errorDelete && <p className="text-red-500 mt-2">{errorDelete}</p>}
 
             </div>
-             <p> {error}  </p>
+             <p style={{marginTop:"3rem"}}> {error}  </p>
             <h2>Billing Records</h2>
             
            
