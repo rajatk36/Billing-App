@@ -16,7 +16,7 @@ import json
 import firebase_admin
 from firebase_admin import auth as fb_auth, credentials as fb_credentials
 
-# Load .env from the server directory explicitly
+
 ENV_PATH = Path(__file__).with_name('.env')
 load_dotenv(dotenv_path=str(ENV_PATH))
 
@@ -24,12 +24,10 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
 CORS(app, supports_credentials=True)
 
-# Session configuration (not used for auth anymore but kept for compatibility)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
-app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+app.config['SESSION_COOKIE_SECURE'] = False  
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
-# Initialize Firebase Admin (robust init with explicit projectId)
 try:
     if not firebase_admin._apps:
         cred = None
@@ -113,7 +111,6 @@ def create_connection():
 def hash_password(password):
     """Hash a password using SHA-256"""
     return hashlib.sha256(password.encode()).hexdigest()
-
 
 def ensure_users_table_has_firebase_uid():
     """Add firebase_uid column to users table if missing"""
@@ -570,6 +567,9 @@ def delete_account():
     finally:
         conn.close()
 
+@app.route("/ping", methods=["GET"])
+def ping():
+    return jsonify({"message": "pong"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
